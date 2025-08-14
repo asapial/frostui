@@ -82,6 +82,18 @@ const Navbar = () => {
               SignOut
             </button>
           )} */}
+
+
+          <Link
+                href="/auth/signin"
+                className="  btn bg-orange-500 rounded-xl text-white hover:bg-orange-600 btn-md shadow-orange-500 hover:shadow-2xs"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="  btn bg-orange-500 rounded-xl text-white hover:bg-orange-600 btn-md shadow-orange-500 hover:shadow-2xs"
+              >Register</Link>
         </div>
       </div>
       
