@@ -9,10 +9,7 @@ const Navbar = () => {
     <>
       {" "}
       <li>
-        <a>Item 1</a>
-      </li>
-      <li>
-        <a>Components</a>
+        <Link href={'/components'}>Components</Link>
       </li>
       <li>
         <a>Dashboard</a>
@@ -51,9 +48,9 @@ const Navbar = () => {
               {NavList}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">
+          <div className="btn btn-ghost text-xl">
             <NamePlate></NamePlate>
-          </a>
+          </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{NavList}</ul>
@@ -87,6 +84,7 @@ const Navbar = () => {
           )} */}
         </div>
       </div>
+      
     </div>
   );
 };
