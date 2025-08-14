@@ -3,7 +3,7 @@ import SectionContainer from "@/Utils/SectionContainer";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import bcrypt from "bcrypt";
+
 
 // React Icons
 import {
@@ -16,6 +16,7 @@ import {
   FaImage,
 } from "react-icons/fa";
 import { MdOutlineNumbers } from "react-icons/md";
+import handleRegister from "@/actions/authentication/register";
 
 // ✅ Moved outside so React doesn't recreate it on every render
 const InputField = ({ icon: Icon, ...props }) => (
@@ -83,13 +84,18 @@ export default function Register() {
       }
     }
 
-    const hash = bcrypt.hashSync(formData.password, 10);
-    formData.password=hash;
-
     const userData = { ...formData, photo: photoUrl };
     delete userData.confirmPassword;
-    console.log(userData);
-    toast.success("Registration successful!");
+    // console.log(userData);
+    const res=await handleRegister(userData);
+    if(res.isCreated){
+      toast.success("Registration successful!");
+
+    }
+    else{
+      toast.error("Registration failed");
+    }
+    
   };
 
   return (

@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import Link from "next/link";
-// import { useSession } from "next-auth/react";
-// import { signOut } from "next-auth/react"
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import NamePlate from "../UI/NamePlate";
 
 const Navbar = () => {
@@ -9,7 +10,7 @@ const Navbar = () => {
     <>
       {" "}
       <li>
-        <Link href={'/components'}>Components</Link>
+        <Link href={"/components"}>Components</Link>
       </li>
       <li>
         <a>Dashboard</a>
@@ -17,8 +18,8 @@ const Navbar = () => {
     </>
   );
 
-//   const session = useSession();
-//   console.log(session);
+  const session = useSession();
+  console.log(session);
   return (
     <div>
       <div className="navbar bg-gray-900 shadow-sm text-white">
@@ -55,9 +56,9 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{NavList}</ul>
         </div>
-        <div className="navbar-end">
-          {/* {session.status !== "authenticated" && (
-            <div>
+        <div className="navbar-end flex gap-5">
+          {session.status !== "authenticated" && (
+            <div className=" flex gap-5">
               {" "}
               <Link
                 href="/auth/signin"
@@ -72,31 +73,35 @@ const Navbar = () => {
                 Register
               </Link>
             </div>
-          )} */}
+          )}
 
-          {/* {session.status === "authenticated" && (
+          {session.status === "authenticated" && (
             <button
               className="  btn bg-orange-500 rounded-xl text-white hover:bg-orange-600 btn-md shadow-orange-500 hover:shadow-2xs"
               onClick={() => signOut()}
             >
               SignOut
             </button>
-          )} */}
+          )}
 
 
-          <Link
-                href="/auth/signin"
-                className="  btn bg-orange-500 rounded-xl text-white hover:bg-orange-600 btn-md shadow-orange-500 hover:shadow-2xs"
-              >
-                Login
-              </Link>
-              <Link
-                href="/auth/register"
-                className="  btn bg-orange-500 rounded-xl text-white hover:bg-orange-600 btn-md shadow-orange-500 hover:shadow-2xs"
-              >Register</Link>
+
+          <div className="tooltip  tooltip-bottom">
+            <div className="tooltip-content">
+              <div className="animate-bounce text-orange-400 -rotate-10 text-2xl font-black">
+                Wow!
+              </div>
+            </div>
+            <button className="">
+              <div className="avatar">
+                <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
+                  <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
-      
     </div>
   );
 };
