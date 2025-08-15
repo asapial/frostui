@@ -26,7 +26,7 @@ import NextAuthProvider from "@/Provider/NextAuthProvider";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="frostUILight">
       <body>
         <NextAuthProvider>
           <Navbar></Navbar>

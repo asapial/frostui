@@ -54,13 +54,13 @@ export default function ComponentCategories() {
   // }, []);
 
   return (
-<SectionContainer className="py-20 bg-gradient-to-b from-blue-100 to-white">
+<SectionContainer className="customGradiant3">
 
       <div className="container mx-auto px-6 lg:px-12 text-center">
-        <h2 className="text-4xl font-bold text-blue-900 mb-4">
+        <h2 className="headerStyle">
           Explore Component Categories
         </h2>
-        <p className="text-blue-700 max-w-xl mx-auto mb-12">
+        <p className="descriptionStyle">
           Browse from a variety of pre-built UI components for your projects.
         </p>
 
@@ -68,15 +68,15 @@ export default function ComponentCategories() {
           {categories.map((cat, i) => (
             <motion.div
               key={cat.id}
-              className="bg-white rounded-xl shadow-lg border border-blue-200 p-6 flex flex-col items-center hover:shadow-xl transition cursor-pointer"
+              className="boxStyle customGradiant2 flex flex-col items-centertransition cursor-pointer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
               <div className="text-5xl mb-4">{cat.icon}</div>
-              <h3 className="text-xl font-semibold text-blue-900">{cat.name}</h3>
-              <p className="text-blue-700 text-sm mt-2">{cat.description}</p>
+              <h3 className="text-xl font-semibold text-primary">{cat.name}</h3>
+              <p className="text-secondary text-sm mt-2">{cat.description}</p>
             </motion.div>
           ))}
         </div>

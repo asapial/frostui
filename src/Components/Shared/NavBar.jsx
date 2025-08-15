@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import NamePlate from "../UI/NamePlate";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 const Navbar = () => {
+    const [theme, setTheme] = useState(true);
   const NavList = (
     <>
       {" "}
@@ -21,9 +23,20 @@ const Navbar = () => {
   const session = useSession();
   // console.log(session);
   // console.log(session.data.user.photo);
+
+    const toggleTheme = () => {
+    setTheme(!theme);
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute("data-theme");
+    html.setAttribute(
+      "data-theme",
+      currentTheme === "frostUILight" ? "frostUIDark" : "frostUILight"
+    );
+  };
+
   return (
-    <div className="bg-gray-900">
-      <div className="navbar bg-gray-900 shadow-sm text-white max-w-7xl mx-auto">
+    <div className="customGradiant1">
+      <div className="navbar  max-w-7xl mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -58,6 +71,10 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{NavList}</ul>
         </div>
         <div className="navbar-end flex gap-5">
+            <button onClick={toggleTheme} className=" mr-5">
+              {!theme ? <FaSun size={30} /> : <FaMoon size={30} />}
+            </button>
+
           {session.status !== "authenticated" && (
             <div className=" flex gap-5">
               {" "}
@@ -85,8 +102,6 @@ const Navbar = () => {
             </button>
           )}
 
-
-
           <div className="tooltip  tooltip-bottom">
             <div className="tooltip-content">
               <div className="animate-bounce text-orange-400 -rotate-10 text-2xl font-black">
@@ -96,7 +111,12 @@ const Navbar = () => {
             <button className="">
               <div className="avatar">
                 <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
-                  <img src={`${session?.data?.user?.photo || "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"}`} />
+                  <img
+                    src={`${
+                      session?.data?.user?.photo ||
+                      "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
+                    }`}
+                  />
                 </div>
               </div>
             </button>

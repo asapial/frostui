@@ -46,10 +46,10 @@ export default function SubscriptionModel() {
   ];
 
   return (
-    <SectionContainer className="relative py-20 bg-gradient-to-b from-blue-50 to-blue-100">
+    <SectionContainer className="relative customGradiant1">
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-blue-900">Choose Your Plan</h2>
-        <p className="text-blue-700 mt-2">
+        <h2 className="headerStyle">Choose Your Plan</h2>
+        <p className="descriptionStyle">
           Flexible pricing for developers, designers, and creators.
         </p>
       </div>
@@ -58,10 +58,10 @@ export default function SubscriptionModel() {
         {plans.map((plan, i) => (
           <motion.div
             key={plan.name}
-            className={`rounded-xl shadow-lg p-8 border transition transform hover:-translate-y-2 ${
+            className={`boxStyle transition transform hover:-translate-y-2 ${
               plan.highlighted
                 ? "bg-blue-600 text-white border-blue-700"
-                : "bg-white text-blue-900 border-blue-200"
+                : "customGradiant2"
             }`}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
