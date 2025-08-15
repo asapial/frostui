@@ -70,12 +70,12 @@ export default function CreateComponent() {
   };
 
   return (
-    <SectionContainer>
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 p-6">
+    <SectionContainer  className="bg-gradient-to-br from-blue-200 via-blue-300 to-blue-500">
+      <div className="min-h-screen flex items-center justify-center  p-6">
         <ToastContainer />
         <form
           onSubmit={handleSubmit}
-          className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-2xl border border-white/20 space-y-4"
+          className="bg-blue-500/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-2xl border border-white/20 space-y-4"
         >
           <h2 className="text-3xl font-bold text-center text-white mb-4">
             Create New Component
@@ -83,14 +83,14 @@ export default function CreateComponent() {
 
           {/* Title */}
           <div className="relative">
-            <FaHeading className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300" />
+            <FaHeading className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500" />
             <input
               type="text"
               name="title"
               placeholder="Component Title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
           </div>
 
@@ -99,7 +99,7 @@ export default function CreateComponent() {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
           >
             <option value="">Select Category</option>
             <option value="button">Button</option>
@@ -114,19 +114,19 @@ export default function CreateComponent() {
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
           />
 
           {/* Tags */}
           <div className="relative">
-            <FaTags className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300" />
+            <FaTags className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500" />
             <input
               type="text"
               name="tags"
               placeholder="Tags (comma separated)"
               value={formData.tags}
               onChange={handleChange}
-              className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white placeholder-blue-200"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
           </div>
 
@@ -136,7 +136,7 @@ export default function CreateComponent() {
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="w-full p-3 rounded-lg bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             >
               <option value="free">Free</option>
               <option value="premium">Premium</option>
@@ -150,7 +150,7 @@ export default function CreateComponent() {
                 placeholder="Price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white placeholder-blue-200"
+                className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
                 step="0.01"
               />
             </div>
@@ -164,7 +164,7 @@ export default function CreateComponent() {
               name="previewImage"
               accept="image/*"
               onChange={handleChange}
-              className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
           </div>
 
@@ -176,7 +176,7 @@ export default function CreateComponent() {
               placeholder="Component HTML/CSS/JS code"
               value={formData.previewCode}
               onChange={handleChange}
-              className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white placeholder-blue-200"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
               rows={4}
             />
           </div>
@@ -190,7 +190,7 @@ export default function CreateComponent() {
               placeholder="Live Preview Iframe URL"
               value={formData.previewIframe}
               onChange={handleChange}
-              className="w-full pl-10 p-3 rounded-lg bg-white/20 text-white placeholder-blue-200"
+              className="w-full pl-10 p-3 rounded-lg bg-white text-blue-500 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
           </div>
 
