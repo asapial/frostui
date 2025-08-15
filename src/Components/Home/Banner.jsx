@@ -1,31 +1,46 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Banner() {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    // Generate all random positions and styles on client only
+    const generated = Array.from({ length: 30 }, () => ({
+      width: Math.random() * 4 + 2,
+      height: Math.random() * 4 + 2,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      duration: Math.random() * 10 + 10,
+      delay: Math.random() * 5,
+    }));
+    setParticles(generated);
+  }, []);
+
   return (
     <section className="relative w-full min-h-[90vh] bg-gradient-to-br from-blue-900 via-blue-700 to-blue-400 flex items-center justify-center overflow-hidden">
       {/* Snow Particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(30)].map((_, i) => (
+        {particles.map((p, i) => (
           <motion.span
             key={i}
             className="absolute bg-white rounded-full opacity-50"
             style={{
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
+              width: p.width,
+              height: p.height,
+              top: p.top,
+              left: p.left,
             }}
             animate={{
               y: ["0%", "100%"],
               opacity: [0.3, 0.8, 0.3],
             }}
             transition={{
-              duration: Math.random() * 10 + 10,
+              duration: p.duration,
               repeat: Infinity,
               ease: "linear",
-              delay: Math.random() * 5,
+              delay: p.delay,
             }}
           />
         ))}
@@ -69,7 +84,6 @@ export default function Banner() {
               className="object-cover w-full h-full"
             />
           </motion.div>
-          {/* Floating Tags */}
           {["Buttons", "Cards", "Navbars", "Footers"].map((tag, idx) => (
             <motion.span
               key={tag}

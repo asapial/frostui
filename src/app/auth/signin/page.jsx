@@ -4,8 +4,10 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEnvelope, FaLock, FaGoogle } from "react-icons/fa";
-import { signIn } from "next-auth/react";
-
+import {
+  handleGoogleSignIN,
+  handleSignIN,
+} from "@/actions/authentication/signin";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -14,7 +16,7 @@ export default function SignIn() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
@@ -24,32 +26,28 @@ export default function SignIn() {
 
     // TODO: Backend login logic
     console.log("Logging in with:", formData);
-    const res= signIn('credentials',{  callbackUrl: "/",   email:formData.email,password:formData.password})
 
-    if(res._id){
-        toast.success("Signed in successfully!");
-        
+    const res = await handleSignIN(formData);
 
+    if (res.code === "ERROR") {
+      toast.error(res.message);
+    } else {
+      toast.success("Signed in successfully!");
+      window.location.href = res.url;
     }
-
-  };
-
-  const handleGoogleSignIn = () => {
-    // TODO: Google OAuth logic
-    console.log("Google sign-in clicked");
-    toast.info("Redirecting to Google...");
   };
 
   return (
-    <SectionContainer  className="bg-gradient-to-br from-blue-200 via-blue-300 to-blue-500">
+    <SectionContainer className="bg-gradient-to-br from-blue-200 via-blue-300 to-blue-500">
       <div className="min-h-screen flex items-center justify-center p-6">
         <ToastContainer />
-        <div  className="backdrop-blur-lg bg-white/30 shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-white/40">
+        <div className="backdrop-blur-lg bg-white/30 shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-white/40">
           <h2 className="text-3xl font-bold text-center text-white mb-6">
             Welcome Back
           </h2>
           <p className="text-blue-100 text-center mb-8">
-            Sign in to continue to <span className="font-semibold">FrostUI</span>
+            Sign in to continue to{" "}
+            <span className="font-semibold">FrostUI</span>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -67,14 +65,16 @@ export default function SignIn() {
             </div>
 
             {/* Password */}
-            <div className="relative flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 mb-3 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300">   <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400" />
+            <div className="relative flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 mb-3 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300">
+              {" "}
+              <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400" />
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-               className="w-full  pl-10 bg-transparent outline-none text-gray-700 placeholder-gray-500"
+                className="w-full  pl-10 bg-transparent outline-none text-gray-700 placeholder-gray-500"
               />
             </div>
 
@@ -96,7 +96,7 @@ export default function SignIn() {
 
           {/* Google Sign In */}
           <button
-            onClick={handleGoogleSignIn}
+            onClick={handleGoogleSignIN}
             className="w-full flex items-center justify-center gap-3 bg-white text-blue-600 p-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300 shadow-lg"
           >
             <FaGoogle className="text-red-500" /> Sign in with Google
@@ -105,7 +105,10 @@ export default function SignIn() {
           {/* Footer */}
           <p className="text-center text-blue-100 mt-6 text-sm">
             Don’t have an account?{" "}
-            <a href="/register" className="text-white font-semibold hover:underline">
+            <a
+              href="/register"
+              className="text-white font-semibold hover:underline"
+            >
               Create one
             </a>
           </p>

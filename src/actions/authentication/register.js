@@ -3,33 +3,34 @@
 import { dbConnect } from "@/lib/dbConnect";
 import bcrypt from "bcrypt";
 
-const handleRegister=async (payload)=>{
+const handleRegister = async (payload) => {
+  const userCursor = await dbConnect("userCollection");
 
-const userCursor=await dbConnect('userCollection');
-const isPreviousUser= await userCursor.findOne({email:payload.email});
+  const isPreviousUser = await userCursor.findOne({ email: payload.email });
+  if (isPreviousUser) {
+    return { isCreated: false, reason: "Email already registered" };
+  }
 
-if(Boolean(isPreviousUser)){
-    return {isCreated:false};
-}
+  payload.password = await bcrypt.hash(payload.password, 10);
+  payload.role = "user";
+  payload.status = "active";
+  payload.createdAt = new Date();
+  payload.provider = "credentials";
+  payload.isProfileOk = true;
+  payload.age = new Date().getFullYear() - new Date(payload.dob).getFullYear();
 
-const hashPassword= await bcrypt.hash(payload.password, 10);
-payload.password=hashPassword;
-payload.role="user";
-payload.status='active';
-payload.createdAt= new Date();
+  const user = await userCursor.insertOne(payload);
 
-const user = await userCursor.insertOne(payload);
-const isCreated=true;
+  console.log("Inserted user:", payload, user);
 
-if(user.acknowledged){
-    return {insertedId:user.insertedId,isCreated};
-}
-else
-{
-    return {isCreated:false};
-}
-console.log(payload, user);
+  if (user.acknowledged) {
+    return {
+      insertedId: user.insertedId.toString(), // ✅ Fix serialization error
+      isCreated: true,
+    };
+  }
 
-}
+  return { isCreated: false };
+};
 
 export default handleRegister;

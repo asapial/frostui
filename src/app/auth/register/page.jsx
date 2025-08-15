@@ -4,7 +4,6 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 // React Icons
 import {
   FaUser,
@@ -15,10 +14,10 @@ import {
   FaCalendarAlt,
   FaImage,
 } from "react-icons/fa";
-import { MdOutlineNumbers } from "react-icons/md";
 import handleRegister from "@/actions/authentication/register";
+import { redirect } from "next/navigation";
 
-// ✅ Moved outside so React doesn't recreate it on every render
+// ✅ Input component
 const InputField = ({ icon: Icon, ...props }) => (
   <div className="flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 mb-3 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300">
     <Icon className="text-blue-600 mr-3" />
@@ -34,7 +33,6 @@ export default function Register() {
     name: "",
     email: "",
     phone: "",
-    age: "",
     password: "",
     confirmPassword: "",
     gender: "",
@@ -43,16 +41,57 @@ export default function Register() {
     photo: null,
   });
 
+  const [uploading, setUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value, // update only changed field
+      [name]: files ? files[0] : value,
     }));
+
+    if (files && files[0]) {
+      setImagePreview(URL.createObjectURL(files[0]));
+      handleImageUpload(files[0]);
+    }
+  };
+
+  const handleImageUpload = async (file) => {
+    setUploading(true);
+    setUploaded(false);
+
+    const form = new FormData();
+    form.append("image", file);
+    const apiKey = "b127cf48e5d98246a87aeaa307000c3b";
+
+    try {
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${apiKey}`,
+        {
+          method: "POST",
+          body: form,
+        }
+      );
+      const data = await res.json();
+      if (data?.data?.url) {
+        setFormData((prev) => ({ ...prev, photo: data.data.url }));
+        setUploaded(true);
+        toast.success("Image uploaded successfully!");
+      } else {
+        toast.error("Image upload failed");
+      }
+    } catch (err) {
+      toast.error("Photo upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.email || !formData.password) {
       toast.error("Please fill all required fields");
       return;
@@ -62,40 +101,16 @@ export default function Register() {
       return;
     }
 
-    let photoUrl = "";
-    if (formData.photo) {
-      const form = new FormData();
-      form.append("image", formData.photo);
-      const apiKey = "b127cf48e5d98246a87aeaa307000c3b";
-
-      try {
-        const res = await fetch(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          {
-            method: "POST",
-            body: form,
-          }
-        );
-        const data = await res.json();
-        photoUrl = data.data.url;
-      } catch (err) {
-        toast.error("Photo upload failed");
-        return;
-      }
-    }
-
-    const userData = { ...formData, photo: photoUrl };
+    const userData = { ...formData };
     delete userData.confirmPassword;
-    // console.log(userData);
-    const res=await handleRegister(userData);
-    if(res.isCreated){
-      toast.success("Registration successful!");
 
-    }
-    else{
+    const res = await handleRegister(userData);
+    if (res.isCreated) {
+      toast.success("Registration successful!");
+      redirect("/");
+    } else {
       toast.error("Registration failed");
     }
-    
   };
 
   return (
@@ -109,6 +124,23 @@ export default function Register() {
           <h2 className="text-3xl font-bold mb-6 text-center text-white drop-shadow-lg">
             Create Your Account
           </h2>
+                      {/* Upload State */}
+            <div className="mt-4 flex justify-center">
+              {uploading ? (
+                <div className="text-center text-gray-700">
+                  <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  <p className="mt-2">Uploading...</p>
+                </div>
+              ) : uploaded && imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+                />
+              ) : (
+                <p className="text-gray-400"></p>
+              )}
+            </div>
 
           <InputField
             icon={FaUser}
@@ -139,15 +171,6 @@ export default function Register() {
             onChange={handleChange}
           />
 
-          {/* <InputField
-            icon={MdOutlineNumbers}
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={formData.age}
-            onChange={handleChange}
-          /> */}
-
           <InputField
             icon={FaLock}
             type="password"
@@ -168,7 +191,7 @@ export default function Register() {
             required
           />
 
-          <div className="mb-3 flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300">
+          <div className="mb-3 flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 shadow-sm">
             <FaUser className="text-blue-600 mr-3" />
             <select
               name="gender"
@@ -200,20 +223,32 @@ export default function Register() {
             onChange={handleChange}
           />
 
-          <div className="mb-5 flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 shadow-sm transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300">
-            <FaImage className="text-blue-600 mr-3" />
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              onChange={handleChange}
-              className="bg-transparent outline-none text-gray-700"
-            />
+          {/* Image Upload */}
+          <div className="mb-5">
+            <label className="flex items-center bg-white/80 border border-gray-300 rounded-lg p-3 shadow-sm cursor-pointer">
+              <FaImage className="text-blue-600 mr-3" />
+              <input
+                type="file"
+                name="photo"
+                accept="image/*"
+                onChange={handleChange}
+                className="bg-transparent outline-none text-gray-700"
+              />
+            </label>
+
+
+
           </div>
 
+          {/* Register Button */}
           <button
             type="submit"
-            className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg shadow-lg hover:scale-105 focus:ring-4 focus:ring-blue-300 transition-transform duration-200"
+            disabled={!uploaded}
+            className={`w-full py-3 text-lg font-semibold text-white rounded-lg shadow-lg transition-transform duration-200 ${
+              uploaded
+                ? "bg-gradient-to-r from-blue-600 to-blue-400 hover:scale-105"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
             Register
           </button>
