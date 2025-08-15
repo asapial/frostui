@@ -115,8 +115,18 @@ const handler = NextAuth({
         if (dbUser) {
           session.user.id = dbUser._id.toString();
           session.user.name = dbUser.name;
-          session.user.image = dbUser.image;
+          session.user.email = dbUser.email;
+          session.user.phone = dbUser.phone;
+          session.user.gender = dbUser.gender;
+          session.user.country = dbUser.country;
+          session.user.dob = dbUser.dob;
+          session.user.photo = dbUser.photo;
           session.user.role = dbUser.role;
+          session.user.status = dbUser.status;
+          session.user.createdAt = dbUser.createdAt;
+          session.user.provider = dbUser.provider;
+          session.user.isProfileOk = dbUser.isProfileOk;
+          session.user.age = dbUser.age;
         }
         return session;
       } catch (err) {

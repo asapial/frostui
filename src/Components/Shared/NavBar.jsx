@@ -19,10 +19,11 @@ const Navbar = () => {
   );
 
   const session = useSession();
-  console.log(session);
+  // console.log(session);
+  // console.log(session.data.user.photo);
   return (
-    <div>
-      <div className="navbar bg-gray-900 shadow-sm text-white">
+    <div className="bg-gray-900">
+      <div className="navbar bg-gray-900 shadow-sm text-white max-w-7xl mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -89,13 +90,13 @@ const Navbar = () => {
           <div className="tooltip  tooltip-bottom">
             <div className="tooltip-content">
               <div className="animate-bounce text-orange-400 -rotate-10 text-2xl font-black">
-                Wow!
+                {session?.data?.user?.name}
               </div>
             </div>
             <button className="">
               <div className="avatar">
                 <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
-                  <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+                  <img src={`${session?.data?.user?.photo || "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"}`} />
                 </div>
               </div>
             </button>
