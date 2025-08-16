@@ -1,0 +1,83 @@
+
+
+[data-theme="frostUILight"] .customGradiant1 {
+  background: linear-gradient(to bottom right,
+      #fafffc,
+      #fef9f3,
+      #f8f1e8);
+} 
+
+[data-theme="frostUIDark"] .customGradiant1 {
+  background: linear-gradient(to bottom right,
+      #1c1f24,
+      #2a2e35,
+      #202428
+
+    );
+}
+
+
+/* ================================================================================================== */
+
+/* 
+[data-theme="frostUILight"] .customGradiant2 {
+  background: #E0FFFF;
+} */
+
+[data-theme="frostUILight"] .customGradient2 {
+  background: linear-gradient(
+    to bottom right,
+    #f5faff,
+    #dceeff,
+    #b8dbff
+  );
+}
+[data-theme="frostUILight"] .customGradiant3 {
+  background: linear-gradient(to bottom right, #ebf4f5, #b5c6e0);
+}
+
+[data-theme="frostUILight"] .customGradient4 {
+  background: linear-gradient(
+    to bottom right,
+    #fff9f2,
+    #ffe0b3,
+    #ffd29b
+  );
+}
+
+
+/* --------------- dark theme -------  */
+
+/* ok */
+
+
+[data-theme="frostUIDark"] .customGradiant2 {
+  background: #343434;
+}
+
+[data-theme="frostUIDark"] .customGradiant3 {
+  background: linear-gradient(to bottom right,
+      #0e1c26,
+      #2a454b,
+      #294861);
+}
+
+[data-theme="frostUIDark"] .customGradiant4 {
+  background: linear-gradient(
+    to bottom right,
+    #0a0f1a,
+    #1a2b3c,
+    #2e4964
+  );
+}
+
+[data-theme="frostUIDark"] .customGradiant5 {
+  background: linear-gradient(
+    to bottom right,
+    #1a0f1f,
+    #2a1b3d,
+    #3d2f5d
+  );
+}
+
+

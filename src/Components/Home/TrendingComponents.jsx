@@ -44,13 +44,13 @@ const trendingData = [
 
 export default function TrendingComponents() {
   return (
-<SectionContainer className="py-20 bg-white">
+<SectionContainer className="customGradiant3">
    
       <div className="container mx-auto px-6 lg:px-12">
-        <h2 className="text-4xl font-bold text-blue-900 mb-4 text-center">
+        <h2 className="headerStyle">
           Trending Components
         </h2>
-        <p className="text-blue-700 mb-12 text-center max-w-xl mx-auto">
+        <p className="descriptionStyle">
           Check out the most popular UI components used by our community.
         </p>
 

@@ -54,7 +54,7 @@ export default function ComponentCategories() {
   // }, []);
 
   return (
-<SectionContainer className="customGradiant3">
+<SectionContainer className="customGradient2">
 
       <div className="container mx-auto px-6 lg:px-12 text-center">
         <h2 className="headerStyle">
@@ -64,11 +64,11 @@ export default function ComponentCategories() {
           Browse from a variety of pre-built UI components for your projects.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid customGradient2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.id}
-              className="boxStyle customGradiant2 flex flex-col items-centertransition cursor-pointer"
+              className="boxStyle  flex flex-col items-centertransition cursor-pointer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

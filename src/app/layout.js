@@ -1,6 +1,10 @@
 "use client";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "../CSS/theme.css"
+import "../CSS/custombg.css"
+import "../CSS/otherStyle.css"
+
 import Navbar from "@/Components/Shared/NavBar";
 import Footer from "@/Components/Shared/Footer";
 import { ToastContainer } from "react-toastify";
