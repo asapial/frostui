@@ -1,6 +1,7 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
 
+
 const uri=process.env.db_uri;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -29,3 +30,10 @@ export async function dbConnect(collectionName){
   }
 }
 
+
+
+export const collectionList={
+  componentsCollection:'componentsCollection',
+  subscriptionModel:'subscriptionModel',
+  userCollection:'userCollection',
+}

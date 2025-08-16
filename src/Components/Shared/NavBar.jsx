@@ -15,6 +15,9 @@ const Navbar = () => {
         <Link href={"/components"}>Components</Link>
       </li>
       <li>
+        <Link href={"/dashboard/user/createComponent"}>CreateComponent</Link>
+      </li>
+      <li>
         <a>Dashboard</a>
       </li>
     </>
