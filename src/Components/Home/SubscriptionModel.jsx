@@ -60,7 +60,7 @@ export default function SubscriptionModel() {
             key={plan.name}
             className={`boxStyle transition transform hover:-translate-y-2 ${
               plan.highlighted
-                ? "bg-blue-600 text-white border-blue-700"
+                ? "bg-primary text-primary-content border-secondary"
                 : "customGradiant2"
             }`}
             initial={{ opacity: 0, y: 40 }}
@@ -82,8 +82,8 @@ export default function SubscriptionModel() {
             <button
               className={`w-full py-3 rounded-lg font-semibold transition ${
                 plan.highlighted
-                  ? "bg-white text-blue-700 hover:bg-blue-100"
-                  : "bg-blue-600 text-white hover:bg-blue-700"
+                  ? "bg-secondary/90 text-secondary-content hover:bg-secondary"
+                  : "bg-primary/90 text-primary-content hover:bg-primary"
               }`}
             >
               {plan.button}
