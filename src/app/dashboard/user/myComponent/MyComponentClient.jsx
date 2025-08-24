@@ -49,7 +49,7 @@ const MyComponentClient = () => {
 
   // Handle update (redirect to edit page)
   const handleUpdate = (id) => {
-    window.location.href = `/dashboard/user/edit-component/${id}`;
+    window.location.href = `/dashboard/user/updateComponent/${id}`;
   };
 
   if (loading) return <p className="text-center py-10">Loading...</p>;
