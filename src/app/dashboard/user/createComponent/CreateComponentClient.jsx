@@ -15,9 +15,11 @@ import {
 } from "react-icons/fa";
 import SectionContainer from "@/Utils/SectionContainer";
 import { useSession } from "next-auth/react";
-import handleCreateComponent from "@/actions/dashboard/user/createComponent";
+import handleCreateComponent from "./createcomponent";
 
-export default function CreateComponent() {
+
+
+export default function CreateComponentClient() {
   const session = useSession();
   const [formData, setFormData] = useState({
     title: "",

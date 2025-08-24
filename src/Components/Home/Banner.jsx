@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
 import { useEffect, useState } from "react";
+import robotWorker from '../../../public/animation/Man and robot with computers sitting together in workplace.json'
 
 export default function Banner() {
   const [particles, setParticles] = useState([]);
@@ -78,11 +80,12 @@ export default function Banner() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <img
+            {/* <img
               src="/assets/images/component-preview.png"
               alt="UI Component Preview"
               className="object-cover w-full h-full"
-            />
+            /> */}
+            <Lottie animationData={robotWorker} loop={true} />
           </motion.div>
           {["Buttons", "Cards", "Navbars", "Footers"].map((tag, idx) => (
             <motion.span
