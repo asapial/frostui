@@ -1,13 +1,16 @@
 "use client";
-import ComponentPreview from "@/Components/Shared/ComponentPreview";
 import { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaLock, FaRegBookmark, FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import ComponentPreview from "@/Components/Shared/ComponentPreview";
+import CodeBlock from "@/Components/Shared/CodeBlock";
 
 export default function ComponentsClient({ initialComponents }) {
   const [components, setComponents] = useState(initialComponents);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("");
   const [category, setCategory] = useState("");
+  const router = useRouter();
 
   const categories = ["Button", "Card", "Navbar", "Footer"];
 
@@ -40,7 +43,7 @@ export default function ComponentsClient({ initialComponents }) {
   }, [search, filterType, category, initialComponents]);
 
   return (
-    <div className="">
+    <div>
       <h1 className="text-3xl font-bold mb-6">Browse Components</h1>
 
       {/* Search & Filters */}
@@ -88,27 +91,83 @@ export default function ComponentsClient({ initialComponents }) {
       {/* Components Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
         {components.map((comp) => (
-          <div
-            key={comp._id}
-            className="border rounded-lg p-4 hover:shadow-lg transition"
-          >
-            {/* <div className="bg-gray-100 h-32 mb-4 rounded-lg flex items-center justify-center text-gray-500"> */}
-            <div>
-              <ComponentPreview
-                previewCode={
-                  comp.previewCode?.replace(/class=/g, "className=") || ""
-                }
-              />
-            </div>
-            <h3 className="font-semibold">{comp.title}</h3>
-            <p className="text-sm text-gray-500">{comp.category}</p>
-            <p className="text-sm text-gray-600">
-              {comp.price === 0 ? "Free" : `$${comp.price}`}
-            </p>
-            <p className="text-xs text-gray-400">{comp.downloads} downloads</p>
-          </div>
+          <ComponentCard key={comp._id} comp={comp} router={router} />
         ))}
       </div>
+    </div>
+  );
+}
+
+function ComponentCard({ comp, router }) {
+  const [activeTab, setActiveTab] = useState("preview");
+
+  const handleTabChange = (tab) => {
+    if (tab === "code" && comp.price > 0) {
+      router.push(`/payment/${comp._id}`); // redirect to payment page
+    } else {
+      setActiveTab(tab);
+    }
+  };
+
+  return (
+    <div className="border rounded-lg p-4 hover:shadow-lg transition ">
+      {/* Tabs */}
+      <div className=" flex justify-between  mb-4 border-b">
+        <div className=" flex gap-5">
+          <button
+            onClick={() => handleTabChange("preview")}
+            className={`pb-2 ${
+              activeTab === "preview"
+                ? "border-b-2 border-blue-500 text-blue-500 font-semibold"
+                : "text-gray-500"
+            }`}
+          >
+            Preview
+          </button>
+
+          <button
+            onClick={() => handleTabChange("code")}
+            className={`pb-2 flex items-center gap-2 ${
+              activeTab === "code"
+                ? "border-b-2 border-blue-500 text-blue-500 font-semibold"
+                : "text-gray-500"
+            }`}
+          >
+            Code
+            {comp.price > 0 && (
+              <FaLock className="text-gray-400 text-sm" />
+            )}{" "}
+            {/* ✅ Lock icon */}
+          </button>
+        </div>
+
+        <div>
+          <button
+            onClick={() => handleTabChange("code")}
+            className={`pb-2 flex items-center gap-2 ${
+              activeTab === "code"
+                ? "border-b-2 border-blue-500 text-blue-500 font-semibold"
+                : "text-gray-500"
+            }`}
+          >
+            <FaRegBookmark className="text-gray-400 text-lg" />
+          </button>
+        </div>
+      </div>
+
+      {activeTab === "preview" ? (
+        <ComponentPreview previewCode={comp.previewCode} />
+      ) : (
+        <CodeBlock code={comp.previewCode} /> // ✅ replaced inline syntax highlighter
+      )}
+
+      {/* Info */}
+      <h3 className="font-semibold mt-4">{comp.title}</h3>
+      <p className="text-sm text-gray-500">{comp.category}</p>
+      <p className="text-sm text-gray-600">
+        {comp.price === 0 ? "Free" : `$${comp.price}`}
+      </p>
+      <p className="text-xs text-gray-400">{comp.downloads} downloads</p>
     </div>
   );
 }

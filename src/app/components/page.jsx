@@ -15,7 +15,7 @@ export default async function ComponentsPage() {
   }));
 
   return (
-    <SectionContainer className="bg-gray-900">
+    <SectionContainer className="">
       <ComponentsClient initialComponents={components} />
     </SectionContainer>
   );
