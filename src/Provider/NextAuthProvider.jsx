@@ -4,7 +4,7 @@ import React from "react";
 const NextAuthProvider = ({ children }) => {
   return (
     <div>
-      <SessionProvider>{children}</SessionProvider>L
+      <SessionProvider>{children}</SessionProvider>
     </div>
   );
 };

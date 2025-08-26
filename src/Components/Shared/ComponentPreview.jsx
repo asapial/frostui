@@ -2,6 +2,12 @@
 import React, { useMemo } from 'react';
 import JsxParser from 'react-jsx-parser';
 
+// Import CSS files to ensure styles are available in preview
+import '@/app/globals.css';
+import '@/CSS/theme.css';
+import '@/CSS/custombg.css';
+import '@/CSS/otherStyle.css';
+
 // Import icon libraries to support all needed icons
 import * as FaIcons from 'react-icons/fa';     // Font Awesome
 import * as MdIcons from 'react-icons/md';     // Material Design
@@ -11,6 +17,10 @@ import * as AiIcons from 'react-icons/ai';     // Ant Design
 import * as Io5Icons from 'react-icons/io5';   // Ionicons 5
 import * as BiIcons from 'react-icons/bi';     // BoxIcons
 import * as RiIcons from 'react-icons/ri';     // Remix
+import * as LuIcons from 'react-icons/lu';     // Lucide
+import * as TbIcons from 'react-icons/tb';     // Tabler
+import * as HiIcons from 'react-icons/hi';     // Heroicons v1
+import * as Hi2Icons from 'react-icons/hi2';   // Heroicons v2
 
 const ComponentPreview = ({ previewCode }) => {
   // Create a comprehensive list of icons
@@ -22,7 +32,11 @@ const ComponentPreview = ({ previewCode }) => {
     ...AiIcons,
     ...Io5Icons,
     ...BiIcons,
-    ...RiIcons
+    ...RiIcons,
+    ...LuIcons,
+    ...TbIcons,
+    ...HiIcons,
+    ...Hi2Icons
   }), []);
 
   // Preprocess the preview code to ensure proper className handling
@@ -42,6 +56,9 @@ const ComponentPreview = ({ previewCode }) => {
     // Handle Link component by converting it to an anchor tag
     code = code.replace(/<Link/g, '<a');
     code = code.replace(/<\/Link>/g, '</a>');
+    
+    // Remove any empty expressions that might cause parsing errors
+    code = code.replace(/{\s*}/g, '');
     
     return code;
   }, [previewCode]);
@@ -82,7 +99,7 @@ const ComponentPreview = ({ previewCode }) => {
         jsx={processedPreviewCode}
         // Allow className attribute for Tailwind CSS
         allowUnknownElements={true}
-        disableKeyGeneration={true}
+        // disableKeyGeneration={true}
         autoCloseVoidElements={true}
         // Allow all attributes including className for Tailwind
         blacklistedAttrs={[]}
@@ -91,6 +108,18 @@ const ComponentPreview = ({ previewCode }) => {
         // Enable error handling
         onError={(e) => {
           console.warn('JSX parsing error:', e);
+        }}
+        // Handle components that might not be found
+        resolvePath={(components, componentPath) => {
+          // If component is not found, return a placeholder
+          if (!components[componentPath]) {
+            return () => (
+              <span style={{ color: 'red', fontWeight: 'bold' }}>
+                [Missing Component: {componentPath}]
+              </span>
+            );
+          }
+          return components[componentPath];
         }}
       />
     </div>

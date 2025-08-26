@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { getMyComponent } from "./mycomponent";
+import { deleteMyComponent, getMyComponent } from "./mycomponent";
 
 const MyComponentClient = () => {
   const { data: session } = useSession();
@@ -34,11 +34,8 @@ const MyComponentClient = () => {
 
   // Handle delete
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this component?")) return;
 
-    const res = await fetch(`/api/components/${id}`, {
-      method: "DELETE",
-    });
+    const res = await deleteMyComponent(id)
 
     if (res.ok) {
       setComponents((prev) => prev.filter((item) => item._id !== id));
