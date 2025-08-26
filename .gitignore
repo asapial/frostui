@@ -41,3 +41,17 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+
+
+test-all-tailwind
+test-complete
+test-comprehensive
+test-daisyui
+test-final
+test-fixes
+test-gradient
+test-gradient-button
+test-improvements
+test-optimized
+test-specific-button

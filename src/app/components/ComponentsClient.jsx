@@ -1,18 +1,28 @@
 "use client";
-import { useState, useEffect } from "react";
-import { FaLock, FaRegBookmark, FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import {
+  FaLock,
+  FaRegBookmark,
+  FaSearch,
+  FaFilter,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import ComponentPreview from "@/Components/Shared/ComponentPreview";
+
 import CodeBlock from "@/Components/Shared/CodeBlock";
 
 export default function ComponentsClient({ initialComponents }) {
   const [components, setComponents] = useState(initialComponents);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("");
-  const [category, setCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false); // mobile toggle
+  const [collapsed, setCollapsed] = useState(false); // desktop collapse
   const router = useRouter();
 
   const categories = ["Button", "Card", "Navbar", "Footer"];
+  const types = ["Free", "Premium", "Latest", "Most Downloaded"];
 
   useEffect(() => {
     let filtered = initialComponents;
@@ -23,8 +33,8 @@ export default function ComponentsClient({ initialComponents }) {
       );
     }
 
-    if (category) {
-      filtered = filtered.filter((item) => item.category === category);
+    if (selectedCategory) {
+      filtered = filtered.filter((item) => item.category === selectedCategory);
     }
 
     if (filterType === "Free") {
@@ -40,80 +50,173 @@ export default function ComponentsClient({ initialComponents }) {
     }
 
     setComponents(filtered);
-  }, [search, filterType, category, initialComponents]);
+  }, [search, filterType, selectedCategory, initialComponents]);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Browse Components</h1>
-
-      {/* Search & Filters */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 items-center">
-        {/* Search Bar */}
-        <div className="flex items-center border rounded-lg overflow-hidden w-full md:w-1/3">
-          <FaSearch className="ml-3 text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search components..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="p-2 w-full outline-none"
-          />
+    <div className="flex max-h-screen relative">
+      {/* Desktop Sidebar */}
+      <aside
+        className={`hidden lg:flex flex-col min-h-screen bg-white/90 backdrop-blur-lg shadow-2xl transition-all duration-300 p-4 ${
+          collapsed ? "w-20" : "w-64"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          {!collapsed && (
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              FrostUI
+            </h2>
+          )}
+          <button
+            className="text-gray-700"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            {collapsed ? <FaBars size={20} /> : <FaTimes size={20} />}
+          </button>
         </div>
 
-        {/* Category Filter */}
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border rounded-lg p-2"
-        >
-          <option value="">All Categories</option>
+        <nav className="flex-1 space-y-2">
           {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg font-medium transition hover:bg-gradient-to-r hover:from-[#239eab] hover:to-[#74deee] text-gray-700 ${
+                selectedCategory === cat ? "bg-blue-200" : ""
+              }`}
+            >
+              <FaFilter className="text-gray-600" />
+              {!collapsed && <span>{cat}</span>}
+            </button>
           ))}
-        </select>
+          <button
+            onClick={() => setSelectedCategory("")}
+            className="flex items-center gap-3 w-full px-3 py-2 rounded-lg font-medium transition hover:bg-gradient-to-r hover:from-[#239eab] hover:to-[#74deee] text-gray-700"
+          >
+            <FaFilter className="text-gray-600" />
+            {!collapsed && <span>All Categories</span>}
+          </button>
+        </nav>
+      </aside>
 
-        {/* Type Filter */}
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          className="border rounded-lg p-2"
-        >
-          <option value="">Sort / Filter</option>
-          <option value="Free">Free</option>
-          <option value="Premium">Premium</option>
-          <option value="Latest">Latest</option>
-          <option value="Most Downloaded">Most Downloaded</option>
-        </select>
+      {/* Mobile Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full bg-white/95 backdrop-blur-lg shadow-xl transform transition-transform duration-300 z-50 w-64 p-4 lg:hidden ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-800">FrostUI</h2>
+          <button className="text-gray-700" onClick={() => setSidebarOpen(false)}>
+            <FaTimes size={20} />
+          </button>
+        </div>
+
+        <nav className="flex flex-col gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setSidebarOpen(false);
+              }}
+              className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg font-medium transition hover:bg-gradient-to-r hover:from-[#239eab] hover:to-[#74deee] text-gray-700 ${
+                selectedCategory === cat ? "bg-blue-200" : ""
+              }`}
+            >
+              <FaFilter className="text-gray-600" />
+              <span>{cat}</span>
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              setSelectedCategory("");
+              setSidebarOpen(false);
+            }}
+            className="flex items-center gap-3 w-full px-3 py-2 rounded-lg font-medium transition hover:bg-gradient-to-r hover:from-[#239eab] hover:to-[#74deee] text-gray-700"
+          >
+            <FaFilter className="text-gray-600" />
+            <span>All Categories</span>
+          </button>
+        </nav>
       </div>
 
-      {/* Components Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-        {components.map((comp) => (
-          <ComponentCard key={comp._id} comp={comp} router={router} />
-        ))}
-      </div>
+      {/* Overlay for Mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 lg:hidden z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto w-full">
+        {/* Mobile Top Bar */}
+        <div className="lg:hidden flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-800">Components</h1>
+          <button onClick={() => setSidebarOpen(true)} className="text-gray-700">
+            <FaBars size={22} />
+          </button>
+        </div>
+
+        {/* Search & Filter */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
+          <div className="flex items-center border rounded-lg overflow-hidden w-full md:w-1/3">
+            <FaSearch className="ml-3 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search components..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="p-2 w-full outline-none"
+            />
+          </div>
+
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="border rounded-lg p-2"
+          >
+            <option value="">Sort / Filter</option>
+            {types.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Components Grid */}
+        <div className="grid grid-cols-1 gap-6">
+          {components.map((comp) => (
+            <ComponentCard key={comp._id} comp={comp} router={router} />
+          ))}
+        </div>
+      </main>
     </div>
   );
 }
+
+// Import ComponentPreview directly instead of lazy loading to avoid React import issues
+import ComponentPreview from "@/Components/Shared/ComponentPreview";
 
 function ComponentCard({ comp, router }) {
   const [activeTab, setActiveTab] = useState("preview");
 
   const handleTabChange = (tab) => {
     if (tab === "code" && comp.price > 0) {
-      router.push(`/payment/${comp._id}`); // redirect to payment page
+      router.push(`/payment/${comp._id}`);
     } else {
       setActiveTab(tab);
     }
   };
 
+  // Preprocess the preview code to ensure proper className handling
+  const processedPreviewCode = comp.previewCode?.replace(/class=/g, 'className=') || '';
+
   return (
-    <div className="border rounded-lg p-4 hover:shadow-lg transition ">
+    <div className="border rounded-lg p-4 hover:shadow-lg transition bg-white">
       {/* Tabs */}
-      <div className=" flex justify-between  mb-4 border-b">
-        <div className=" flex gap-5">
+      <div className="flex justify-between mb-4 border-b">
+        <div className="flex gap-5">
           <button
             onClick={() => handleTabChange("preview")}
             className={`pb-2 ${
@@ -133,32 +236,21 @@ function ComponentCard({ comp, router }) {
                 : "text-gray-500"
             }`}
           >
-            Code
-            {comp.price > 0 && (
-              <FaLock className="text-gray-400 text-sm" />
-            )}{" "}
-            {/* ✅ Lock icon */}
+            Code {comp.price > 0 && <FaLock className="text-gray-400 text-sm" />}
           </button>
         </div>
 
         <div>
-          <button
-            onClick={() => handleTabChange("code")}
-            className={`pb-2 flex items-center gap-2 ${
-              activeTab === "code"
-                ? "border-b-2 border-blue-500 text-blue-500 font-semibold"
-                : "text-gray-500"
-            }`}
-          >
-            <FaRegBookmark className="text-gray-400 text-lg" />
+          <button className="pb-2 flex items-center gap-2 text-gray-400">
+            <FaRegBookmark className="text-lg" />
           </button>
         </div>
       </div>
 
       {activeTab === "preview" ? (
-        <ComponentPreview previewCode={comp.previewCode} />
+        <ComponentPreview previewCode={processedPreviewCode} />
       ) : (
-        <CodeBlock code={comp.previewCode} /> // ✅ replaced inline syntax highlighter
+        <CodeBlock code={comp.previewCode} />
       )}
 
       {/* Info */}

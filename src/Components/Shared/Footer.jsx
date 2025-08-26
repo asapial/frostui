@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaPhoneAlt,
   FaMapMarkerAlt,
+
 } from "react-icons/fa";
 import NamePlate from "../UI/NamePlate";
 
@@ -110,6 +111,7 @@ const Footer = () => {
       <div className="text-center text-sm py-4 border-t border-base-300">
         © {new Date().getFullYear()} CollabEd. All rights reserved.
       </div>
+
     </footer>
   );
 };
